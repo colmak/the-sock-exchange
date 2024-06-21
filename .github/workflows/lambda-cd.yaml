@@ -35,7 +35,7 @@ jobs:
 
       - name: Upload zip file to S3
         run: |
-          aws s3 cp ./aws/function.zip s3://<replace with your S3 bucket name>/resize.zip
+          aws s3 cp ./aws/function.zip s3://resize-001/resize.zip
 
       - name: Update Lambda function
         run: |

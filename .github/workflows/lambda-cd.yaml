@@ -1,7 +1,7 @@
 name: AWS Lambda CD
 
 on:
-  push:
+  push: 
     branches: [ "main" ]
 
 jobs:

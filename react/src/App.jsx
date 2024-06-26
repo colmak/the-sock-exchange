@@ -1,14 +1,55 @@
-import Sock from "./components/Sock";
-import sock_data from './assets/sock.json';
+import Home from './components/Home';
+import About from './components/About';
+import AddSock from './components/AddSock';
 import features from './assets/promo.json'
 import Footer from "./components/Footer";
 import Search from "./components/Search";
 import ProductFeatures from "./components/ProductFeatures";
+import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Link
+} from "react-router-dom";
 
 function App() {
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(import.meta.env.VITE_SOCKS_API_URL);
+        if (!response.ok) {
+          throw new Error('Data could not be fetched!');
+        }
+        const json_response = await response.json();
+        setData(json_response); // assign JSON response to the data variable.
+      } catch (error) {
+        console.error('Error fetching socks:', error);
+      }
+    };
 
+    fetchData();
+  }, []);
+
+  const handleDelete = async (sockId) => {
+    try {
+      // Make an API request to delete the sock with the given sockId
+      const response = await fetch(`${import.meta.env.VITE_SOCKS_API_URL}/${sockId}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error('Sock could not be deleted!');
+      }
+      // Update the state or fetch the updated data from the server
+      const updatedData = data.filter(sock => sock._id !== sockId); // Remove the deleted sock from the data array
+      setData(updatedData); // Update the state with the updated data
+    } catch (error) {
+      console.error('Error deleting sock:', error);
+    }
+  };
   return (
-    <>
+    <Router>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
           <a className="navbar-brand" href="#">TSE</a>
@@ -18,10 +59,19 @@ function App() {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">Home</a>
+                <Link className="nav-link" to="/">
+                  Home
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">Link</a>
+                <Link className="nav-link" to="/about">
+                  About
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/addsock">
+                  Add Sock
+                </Link>
               </li>
               <li className="nav-item dropdown">
                 <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -38,7 +88,7 @@ function App() {
                 <a className="nav-link disabled" aria-disabled="true">Disabled</a>
               </li>
             </ul>
-            <Search></Search>
+            <Search setData={setData} />
           </div>
         </div>
       </nav>
@@ -47,19 +97,20 @@ function App() {
         <div className="container-fluid">
           <div className="row">
             Both socks and space rockets 🚀 will take you to new heights, but only one will get cold feet!
-            <ProductFeatures features={features} />
+            {/* <ProductFeatures features={features} /> */}
             <div className="card-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
-              {
-                sock_data.map((sock) => (
-                  <Sock key={sock.id} data={sock} />
-                ))
-              }
+              <Routes>
+                <Route exact path="/" element={<Home data={data} handleDelete={handleDelete} />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/addsock" element={<AddSock />} />
+              </Routes>
             </div>
           </div>
-          <Footer environment="Dev" />
+          <Footer environment={import.meta.env.VITE_ENVIRONMENT} />
+
         </div>
       </main>
-    </>
+    </Router>
   )
 }
 

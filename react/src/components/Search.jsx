@@ -1,27 +1,39 @@
 import React, { useState } from 'react';
 
 const Search = (props) => {
-    const [query, setQuery] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
 
-    const handleInputChange = (event) => {
-        setQuery(event.target.value);
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        fetch(`${import.meta.env.VITE_SOCKS_API_URL}/search`, {
+            method: "POST",
+            body: JSON.stringify({ searchTerm }),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                // Handle the response data
+                props.setData(data);
+                console.log(data);
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.error(error);
+            });
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        props.onSearch(query);
+    const handleChange = (e) => {
+        setSearchTerm(e.target.value);
+        console.log(searchTerm);
     };
 
     return (
         <form className="d-flex" role="search" onSubmit={handleSubmit}>
-            <input
-                className="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-                value={query}
-                onChange={handleInputChange}
-            />
+            <input className="form-control me-2" type="search"
+                placeholder="Search" aria-label="Search"
+                value={searchTerm} onChange={handleChange} />
             <button className="btn btn-outline-success" type="submit">Search</button>
         </form>
     );

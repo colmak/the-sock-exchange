@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import { Container, Row, Col } from 'react-bootstrap'; // Import Bootstrap components
 
 const ProductFeatures = ({ features }) => {
+  const memoizedFeatures = useMemo(() => features, [features]);
+
   return (
     <Container className="mt-4">
       <h2 className="mb-4">Product Features</h2>
       <Row>
-        {features.map(feature => (
+        {memoizedFeatures.map(feature => (
           <Col key={feature.id} md={6} lg={3} className="mb-4">
             <div className="p-3 border rounded">
               <h3>{feature.feature}</h3>

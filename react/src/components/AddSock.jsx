@@ -33,9 +33,6 @@ const AddSock = () => {
       body: JSON.stringify(newSock),
     });
   
-    // You might handle response status or other checks here if necessary
-  
-    setSuccess(true);
   };
   
 

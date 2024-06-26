@@ -17,47 +17,27 @@ const AddSock = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
-
+  
     const newSock = {
       userId,
-      sockDetails: {
-        size,
-        color,
-        pattern,
-        material,
-        condition,
-        forFoot,
-      },
-      additionalFeatures: {
-        waterResistant,
-        padded,
-        antiBacterial,
-      },
+      sockDetails: { size, color, pattern, material, condition, forFoot },
+      additionalFeatures: { waterResistant, padded, antiBacterial },
       addedTimestamp: new Date().toISOString(),
     };
-
-    try {
-      const response = await fetch('https://ecs.the-sock-exchange.com/api/socks', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newSock),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to create sock');
-      }
-
-      setSuccess(true);
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
+  
+    const response = await fetch('https://ecs.the-sock-exchange.com/api/socks', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newSock),
+    });
+  
+    // You might handle response status or other checks here if necessary
+  
+    setSuccess(true);
   };
+  
 
   return (
     <div>

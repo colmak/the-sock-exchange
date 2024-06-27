@@ -41,4 +41,4 @@ jobs:
 
       - name: Sync build directory to S3
         run: |
-          aws s3 sync ./react/dist mybucket1111111111223 --delete
+          aws s3 sync ./react/dist s3://mybucket1111111111223 --delete

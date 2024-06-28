@@ -13,21 +13,9 @@ let fruits = ['apple', 'banana', 'cherry', 'date', 'elderberry'];
 //     j++;
 // }
 
-// // Iterate over the array using a do...while loop
-// let k = 0;
-// do {
-//     console.log(fruits[k]);
-//     k++;
-// } while (k < fruits.length);
-
-// // Iterate over the array using a for...of loop
-// for (let fruit of fruits) {
-//     console.log(fruit);
-// }
-
-// Iterate over the array using the forEach method
-// fruits.forEach(fruit => console.log(fruit));
-
-// Iterate over the array using the map method
-// let upperCaseFruits = fruits.map(fruit => fruit.toUpperCase());
-// console.log(upperCaseFruits);
+// Iterate over the array using a do...while loop
+let k = 0;
+do {
+    console.log(fruits[k]);
+    k++;
+} while (k < fruits.length);

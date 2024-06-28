@@ -15,7 +15,7 @@ function greet() {
 }
 
 greet(); // Outputs: Hello World
-console.log(greeting); // Error: greeting is not defined
+// console.log(greeting); // Error: greeting is not defined
 
 // 3. Block scope
 if (true) {
@@ -23,4 +23,4 @@ if (true) {
     console.log(blockVar); // Accessible here
 }
 
-console.log(blockVar); // Error: blockVar is not defined outside the block scope
+// console.log(blockVar); // Error: blockVar is not defined outside the block scope

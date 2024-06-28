@@ -1,3 +1,17 @@
+// function exampleFunction() {
+//     let value = riskyOperation();
+//     console.log('This is the end of the function.');
+// }
+
+// function riskyOperation() {
+//     // This is a placeholder for your operation that might throw an error
+//     // For the sake of example, we're just going to throw an error right away
+//     throw new Error('This is an example error.');
+// }
+
+// // Call the function to see try, catch, and finally in action
+// exampleFunction();
+
 function exampleFunction() {
     try {
         // Try to execute this code

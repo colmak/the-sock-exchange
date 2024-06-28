@@ -12,7 +12,7 @@ const collectionName = process.env.MONGO_DB_COLLECTION;
 const app = express();
 app.use(cors()); // Enable CORS for all routes
 app.use(express.json()); // Middleware to parse JSON bodies
-const PORT = 4401;
+const PORT = 3000;
 
 // Endpoint to read and send JSON file content
 app.get('/socks', async (req, res) => {
@@ -72,6 +72,21 @@ app.post('/socks', async (req, res) => {
     } catch (err) {
         console.error('Error:', err);
         res.status(500).send('Hmm, something doesn\'t smell right... Error adding sock');
+    }
+});
+
+app.get('/socks/:page/:limit', async (req, res) => {
+    try {
+        let { page, limit } = req.params;
+        limit = +limit; // The + converts limit from a string to integer.
+        const client = await MongoClient.connect(url);
+        const db = client.db(dbName);
+        const collection = db.collection(collectionName);
+        const socks = await collection.find({}).skip((page - 1) * limit).limit(limit).toArray();
+        res.json(socks);
+    } catch (err) {
+        console.error('Error:', err);
+        res.status(500).send('Hmm, something doesn\'t smell right... Error fetching socks');
     }
 });
 

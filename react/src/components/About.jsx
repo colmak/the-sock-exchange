@@ -1,10 +1,6 @@
-import ProductFeatures from "./ProductFeatures";
-import features from "../assets/promo.json"
-
 const About = () => {
     return (
       <div>
-        <ProductFeatures features={features} />
         <h1>About</h1>
           <p>Welcome to <strong>The Sock Exchange</strong> - your one-stop-shop for reuniting lost soles! Ever find yourself socked with a lonely leftie, or perhaps a solitary rightie, pining for its partner? Fear not, for The Sock Exchange is here to save the day (and your feet) from mismatched misery. Our innovative platform is dedicated to the noble cause of re-pairing the unpaired, ensuring that every sock finds its soulmate.</p>
           <p>Here's how it works: Simply upload a glamour shot and a heartfelt bio of your single sock. Whether it's a stripey stunner with a passion for puddle-jumping or a woolly wonder that's walked a thousand miles, we believe there's a match for every sock out there. Browse through our vast repository of single socks, upload your own, or maybe, just maybe, find that perfect match that'll make your sock drawer complete again.</p>

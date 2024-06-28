@@ -1,71 +1,87 @@
 let page = 1;
+async function getData() {
+	const socks = await fetch(`https://ecs.the-sock-exchange.com/api/socks/${page}/10`)
+		.then(res => res.json())
+		.then(data => {
+			if (data.length === 0) {
+				throw new Error('No more data to fetch!');
+			}
+			return data;
+		})
+		.catch(error => {
+			console.error('Error 1:', error);
+			alert('No more data to fetch! Starting over from the beginning.');
+			page = 1;
+			getData();
+		});
 
-// Function to fetch data from the API
-async function getData(page) {
-    try {
-        const response = await fetch(`https://ecs.the-sock-exchange.com/api/socks/${page}/10`);
-        const socks = await response.json();
+	try {
+		updateHTML(socks);  // Update HTML after data is fetched
+		page++;
+	} catch (error) {
+		console.error('Error 2:', error);
+	}
 
-        if (Array.isArray(socks) && socks.length > 0) {
-            console.log(socks);
-            updateHTML(socks);  
-        } else {
-            alert('No socks data found');
-        }
-    } catch (error) {
-        console.error('Error fetching the sock data:', error);
-    }
-}
+	
+};
 
-// Function to update the HTML with sock data
 function updateHTML(socks) {
-    const dataDiv = document.getElementById('data');
-    dataDiv.innerHTML = '';
+	try {
+		// for (let i = 0; i < socks.length; i++) {
+		// 	let sock = socks[i];
+		// 	let sockDiv = document.createElement('div');
+		// 	sockDiv.innerHTML = `<div>Color: ${sock.color}</div><div>Size: ${sock.size}</div>`;
+		// 	document.getElementById('data').appendChild(sockDiv);
+		// }
 
-    const table = document.createElement('table');
-    table.className = 'table table-striped';
+		let table = document.createElement('table');
+		table.className = "table";  // Add CSS class to the table
+		let thead = document.createElement('thead');
+		let tbody = document.createElement('tbody');
 
-    const thead = document.createElement('thead');
-    const headerRow = document.createElement('tr');
+		// Create table headers
+		let headers = Object.keys(socks[0].sockDetails);
+		let tr = document.createElement('tr');
 
-    const keys = Object.keys(socks[0].sockDetails);
-    keys.forEach(key => {
-        const th = document.createElement('th');
-        th.scope = 'col';
-        th.innerText = key.charAt(0).toUpperCase() + key.slice(1); 
-        headerRow.appendChild(th);
-    });
+		for (let i = 0; i < headers.length; i++) {
+			let th = document.createElement('th');
+			th.textContent = headers[i];
+			tr.appendChild(th);
+		}
 
-    thead.appendChild(headerRow);
-    table.appendChild(thead);
+		// Same thing as above but using forEach
+		// headers.forEach(header => {
+		// 	let th = document.createElement('th');
+		// 	th.textContent = header;
+		// 	tr.appendChild(th);
+		// });
 
-    const tbody = document.createElement('tbody');
+		thead.appendChild(tr);
+		table.appendChild(thead);
 
-    socks.forEach(sock => {
-        const row = document.createElement('tr');
-        
-        keys.forEach(key => {
-            const td = document.createElement('td');
-            td.innerText = sock.sockDetails[key];
-            row.appendChild(td);
-        });
+		// Create table body
+		socks.forEach(sock => {
 
-        tbody.appendChild(row);
-    });
+			let tr = document.createElement('tr');
+			for (let key in sock.sockDetails) {
+				let td = document.createElement('td');
+				td.textContent = sock.sockDetails[key];
+				tr.appendChild(td);
+			}
+			tbody.appendChild(tr);
+		});
+		table.appendChild(tbody);
 
-    table.appendChild(tbody);
-    dataDiv.appendChild(table);
+		// Clear the existing table if any
+		let dataDiv = document.getElementById('data');
+		dataDiv.innerHTML = '';
+		// Append the new table
+		dataDiv.appendChild(table);
+	} catch (error) {
+		console.error('Error 3:', error);
+	}
 }
 
-// Event listener for the next button
-document.getElementById('next').addEventListener('click', function() {
-    page += 1;   
-    try {
-        getData(page);
-    } catch (e) {
-        alert("Error no more socks: " + e.message);
-    }
-});
-
-// Fetch
-getData(page);
+window.onload = getData;
+// Call the function to fetch and update data
+// getData();

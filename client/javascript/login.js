@@ -4,10 +4,10 @@ document.getElementById('loginButton').addEventListener('click', function() {
 
     console.log('Username: ' + username);
     console.log('Password: ' + password);
-    if(username === 'admin@gmail.com' && password === 'admin' ) {
-        document.querySelector('#logon').innerHTML = "Your in";
-    } else {
-        document.querySelector('#logon').innerHTML = "Your not allowed in";
-    }
 
+    if(username === 'wasadmin@test.com' && password === 'red') {
+        document.getElementById('message').innerHTML = 'Logged in';
+    } else {
+        document.getElementById('message').innerHTML = 'Not authorized';
+    }
 });

@@ -22,7 +22,7 @@ exports.handler = async (event) => {
         console.error(error);
         return {
             statusCode: 500,
-            body: JSON.stringify({ message: 'Error processing image' }),
+            body: JSON.stringify({ message: error }),
         };
     }
 };
